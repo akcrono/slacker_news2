@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="styles.css">
+  </head>
+
+  <body>
+    <div id="wrapper">
+      <div id="navbar">
+        <nav>
+
+            <img class="logo" src="images/y18.gif"></a>
+          <ul class="navbar-links navbar-links-right inline-list">
+            <li><a class = "navbar-links" href="https://news.ycombinator.com/newslogin?whence=%6e%65%77%73">login</a></li>
+          </ul>
+
+          <ul class="navbar-links inline-list">
+            <li><a class = "navbar-links" id="slacker_news" href="https://news.ycombinator.com/news">Slacker News</a></li>
+            <li><a class = "navbar-links" href="https://news.ycombinator.com/newest">new</a></li>
+            <li><a class = "navbar-links" href="https://news.ycombinator.com/newcomments">comments</a></li>
+            <li><a class = "navbar-links" href="https://news.ycombinator.com/show">show</a></li>
+            <li><a class = "navbar-links" href="https://news.ycombinator.com/ask">ask</a></li>
+            <li><a class = "navbar-links" href="https://news.ycombinator.com/jobs">jobs</a></li>
+            <li><a class = "navbar-links" href="https://news.ycombinator.com/submit">submit</a></li>
+          </ul>
+        </nav>
+
+      </div>
+    <div id="body_style">
+      <div style="margin:30px"></div>
+      <div>
+        <%if @error %>
+          <%= @error %>
+          <%end%>
+      </div>
+      <%=yield%>
+    </div>
+  </body>
+</html>

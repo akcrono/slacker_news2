@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Slacker News</title>
+
+    <link rel="stylesheet" href="styles.css">
+  </head>
+    <% @articles.each_with_index do |article, i| %>
+      <div class= "body_div">
+        <p class="body_text"><%=i+1%>. <img class="arrow" src="images/grayarrow.gif"><a class="body_link" href="https://<%= article[:url]%>"> <%=article[:title]%> </a>(<%=article[:url]%>)</p>
+        <p class="body_description"> <%=article[:description]%></p>
+        <p class="body_lower_data">63 points by <a class="body_lower_data" href="https://news.ycombinator.com/user?id=rnyman"> lyime</a> 56 minutes ago | <a class="body_lower_data" href="comments.html">17 comments</a></p>
+      </div>
+
+    <%end%>
+          <a href="/submit"> SUBMIT </a>
+</html>
