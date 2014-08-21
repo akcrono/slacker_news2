@@ -21,13 +21,13 @@ end
 
 def post_is_valid?(post_title, post_url, post_description)
 
-  if post_title == ''
+  if title_is_valid? post_title
     return false
 
-  elsif post_url !~ (/^(www)\.\w+\..{2,6}$/)
+  elsif url_is_valid? post_url
     return false
 
-  elsif post_description == nil || post_description.length < 20
+  elsif description_is_valid? post_description
     return false
   elsif already_submitted post_url
     return false
