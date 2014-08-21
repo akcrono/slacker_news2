@@ -11,7 +11,7 @@ def get_articles
   articles
 end
 
-def already_submitted post_url
+def already_submitted? post_url
   articles = []
   CSV.foreach('articles.csv', headers: true, header_converters: :symbol, converters: :all) do |row|
     return true if row[:url] == post_url
@@ -21,15 +21,16 @@ end
 
 def post_is_valid?(post_title, post_url, post_description)
 
-  if title_is_valid? post_title
+  if !title_is_valid? post_title
     return false
 
-  elsif url_is_valid? post_url
+  elsif !url_is_valid? post_url
     return false
 
-  elsif description_is_valid? post_description
+  elsif !description_is_valid? post_description
     return false
-  elsif already_submitted post_url
+
+  elsif already_submitted? post_url
     return false
   end
   true
@@ -74,7 +75,6 @@ post '/submit' do
     end
   redirect '/'
   else
-
     @error = 'Invalid input'
     @post_title = params[:post_title]
     @post_url = params[:post_url]
@@ -85,7 +85,7 @@ post '/submit' do
       @error = 'Invalid url (FORMAT: www.google.com'
     elsif !description_is_valid? @post_description
       @error = 'Description must be at least 20 characters'
-    else
+    elsif already_submitted? @post_url
       @error = 'This URL has already been posted'
     end
     erb :submit
