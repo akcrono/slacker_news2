@@ -2,6 +2,36 @@ require 'csv'
 require 'sinatra'
 require 'sinatra/reloader'
 require 'pry'
+require 'redis'
+require 'JSON'
+
+def get_connection
+  if ENV.has_key?("REDISCLOUD_URL")
+    Redis.new(url: ENV["REDISCLOUD_URL"])
+  else
+    Redis.new
+  end
+end
+
+def find_articles
+  redis = get_connection
+  serialized_articles = redis.lrange("slacker:articles", 0, -1)
+
+  articles = []
+
+  serialized_articles.each do |article|
+    articles << JSON.parse(article, symbolize_names: true)
+  end
+
+  articles
+end
+
+def save_article(url, title, description)
+  article = { url: url, title: title, description: description }
+
+  redis = get_connection
+  redis.rpush("slacker:articles", article.to_json)
+end
 
 def get_articles
   articles = []
@@ -60,7 +90,7 @@ end
 
 
 get '/' do
-  @articles = get_articles
+  @articles = find_articles
   erb :index
 end
 
@@ -70,9 +100,7 @@ end
 
 post '/submit' do
   if post_is_valid?(params[:post_title], params[:post_url], params[:post_description])
-    CSV.open('articles.csv', 'a') do |csv|
-      csv << [params[:post_title], params[:post_url], params[:post_description]]
-    end
+    save_article(params[:post_url], params[:post_title], params[:post_description])
   redirect '/'
   else
     @error = 'Invalid input'
